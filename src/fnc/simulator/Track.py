@@ -304,7 +304,8 @@ class Map():
         # Compute the segment in which system is evolving
         index = np.all([[s >= self.PointAndTangent[:, 3]], [s < self.PointAndTangent[:, 3] + self.PointAndTangent[:, 4]]], axis=0)
 
-        i = int(np.where(np.squeeze(index))[0])
+        # i = int(np.where(np.squeeze(index))[0])
+        i = np.where(np.squeeze(index))[0].astype(int)
         curvature = self.PointAndTangent[i, 5]
 
         return curvature

@@ -105,8 +105,9 @@ class PredictiveModel():
         depsi_epsi = 1 - dt * (-vx * np.sin(epsi) - vy * np.cos(epsi)) / den * cur
         depsi_s    = 0  # Because cur = constant
         depsi_ey   = dt * (vx * np.cos(epsi) - vy * np.sin(epsi)) / (den ** 2) * cur * (-cur)
-
-        Ai[3, :] = [depsi_vx, depsi_vy, depsi_wz, depsi_epsi, depsi_s, depsi_ey]
+        
+        # Ai[3, :] = [depsi_vx, depsi_vy, depsi_wz, depsi_epsi, depsi_s, depsi_ey]
+        Ai[3,:] = [float(i) for i in [depsi_vx, depsi_vy, depsi_wz, depsi_epsi, depsi_s, depsi_ey]]
         Ci[3]    = epsi + dt * (wz - (vx * np.cos(epsi) - vy * np.sin(epsi)) / (1 - cur * ey) * cur) - np.dot(Ai[3, :], x)
         # ===========================
         # ===== Linearize s =========
@@ -118,7 +119,7 @@ class PredictiveModel():
         ds_s    = 1  # + Ts * (Vx * cos(epsi) - Vy * sin(epsi)) / (1 - ey * rho) ^ 2 * (-ey * drho);
         ds_ey   = -dt * (vx * np.cos(epsi) - vy * np.sin(epsi)) / (den ** 2) * (-cur)
 
-        Ai[4, :] = [ds_vx, ds_vy, ds_wz, ds_epsi, ds_s, ds_ey]
+        Ai[4, :] = [float(i) for i in [ds_vx, ds_vy, ds_wz, ds_epsi, ds_s, ds_ey]]
         Ci[4]    = s + dt * ((vx * np.cos(epsi) - vy * np.sin(epsi)) / (1 - cur * ey)) - np.dot(Ai[4, :], x)
 
         # ===========================

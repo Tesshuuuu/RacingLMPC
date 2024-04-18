@@ -30,7 +30,8 @@ class MPCParams(PythonMsg):
     A: np.array = field(default=None) # prediction matrices. Single matrix for LTI and list for LTV
     B: np.array = field(default=None) # prediction matrices. Single matrix for LTI and list for LTV
 
-    Q: np.array = field(default=np.array((n, n))) # quadratic state cost
+    # Q: np.array = field(default_factory=np.array((n, n))) # quadratic state cost
+    Q: np.array = field(default=None)
     R: np.array = field(default=None) # quadratic input cost
     Qf: np.array = field(default=None) # quadratic state cost final
     dR: np.array = field(default=None) # Quadratic rate cost
@@ -498,8 +499,9 @@ class LMPC(MPC):
         SSu_Points = u[indexSSandQfun, :].T
         Sel_Qfun = self.Qfun[it][indexSSandQfun]
 
-        # Modify the cost if the predicion has crossed the finisch line
-        if self.xPred == []:
+        # Modify the cost if the predicion has crossed the finish line
+        # print(self.xPred)
+        if len(self.xPred) == 0:
             Sel_Qfun = self.Qfun[it][indexSSandQfun]
         elif (np.all((self.xPred[:, 4] > self.predictiveModel.map.TrackLength) == False)):
             Sel_Qfun = self.Qfun[it][indexSSandQfun]
